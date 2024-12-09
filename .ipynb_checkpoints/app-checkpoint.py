@@ -13,15 +13,22 @@ def clean_sm(x):
 @sl.cache_data
 def load_data():
     s = pd.read_csv('social_media_usage.csv')
-    ss = pd.DataFrame()
-    ss['sm_li'] = s['web1h'].apply(clean_sm)
-    ss['income'] = s['income'].apply(lambda x: x if x < 98 else float('nan'))
-    ss['is_parent'] = s['par'].apply(clean_sm)
-    ss['is_married'] = s['marital'].apply(clean_sm)
-    ss['educ2'] = s['educ2'].apply(lambda x: x if x < 98 else float('nan'))
-    ss['is_female'] = s['gender'].apply(lambda x: 1 if x == 2 else 0)
-    ss['age_years'] = s['age'].apply(lambda x: x if x != 98 else float('nan'))
-    return ss.dropna()
+    ss=pd.DataFrame()
+    ss['sm_li']=s['web1h'].apply(lambda x: x if x not in ('8','9') else float('nan'))
+    ss['income']=s['income'].apply(lambda x: x if x <98 else float('nan'))
+    ss['is_parent']=s['par'].apply(lambda x: x if x <8 else float('nan'))
+    ss['is_married']=s['marital'].apply(lambda x: x if x <8 else float('nan'))
+    ss['educ2']=s['educ2'].apply(lambda x: x if x <98 else float('nan'))
+    ss['is_female']=s['gender'].apply(lambda x: x if x < 98 else float('nan'))
+    ss['age_years']=s['age'].apply(lambda x: x if x != 98 else float('nan'))
+    ss=ss.dropna()
+    
+    
+    ss['sm_li']=ss['sm_li'].apply(clean_sm)
+    ss['is_parent']=ss['is_parent'].apply(clean_sm)
+    ss['is_married']=ss['is_married'].apply(clean_sm)
+    ss['is_female']=ss['is_female'].apply(lambda x: 1 if x == 2 else 0)
+    return ss
 
 # Train the logistic regression model
 @sl.cache_data
