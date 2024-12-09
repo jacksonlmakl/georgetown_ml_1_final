@@ -71,4 +71,5 @@ sl.write(f"Probability of not using LinkedIn: {probabilities[0]:.2%}")
 sl.subheader("Model Performance")
 y_pred = model.predict(X_test)
 sl.write("Classification Report:")
-sl.text(classification_report(y_test, y_pred, target_names=["Not a LinkedIn user (0)", "LinkedIn user (1)"]))
+sl.table(pd.DataFrame(classification_report(y_test, y_pred, target_names=["Not a LinkedIn user (0)", "LinkedIn user (1)"],output_dict=True)))
+
